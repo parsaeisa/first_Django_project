@@ -6,11 +6,9 @@ from django.db.models.fields import EmailField
 # Create your models here.
 
 class Collection (models.Model):
-
     title = models.CharField(max_length=255)
 
 class Product (models.Model):
-    
     # sku = models.CharField(max_length=10 , primary_key=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -19,6 +17,12 @@ class Product (models.Model):
     inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now=True)
     collection = models.ForeignKey(Collection , on_delete=models.PROTECT)
+
+    promotions = models.ManyToManyField('Promotion' ) #, related_name='products')
+
+class Promotion (models.Model):
+    description = models.CharField(max_length=255)
+    discount = models.FloatField()
 
 class Customer (models.Model):
 
@@ -57,8 +61,7 @@ class Order (models.Model):
         Customer , on_delete= models.PROTECT 
     )
 
-class OrderItem(models.Model):
-    
+class OrderItem(models.Model): 
     order = models.ForeignKey(Order , on_delete=models.PROTECT)
     product = models.ForeignKey(Product , on_delete=models.PROTECT)
     quantity = models.PositiveSmallIntegerField()
@@ -68,13 +71,11 @@ class Cart (models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 class CartItem (models.Model):
-
     cart = models.ForeignKey(Cart , on_delete=models.CASCADE)
     product = models.ForeignKey(Product , on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField()
 
 class Address(models.Model):
-    
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     
