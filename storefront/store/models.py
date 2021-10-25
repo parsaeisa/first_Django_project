@@ -17,7 +17,12 @@ class Product (models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     # prices less than 9999.99
-    price = models.DecimalField(max_digits=6 , decimal_places=2)
+    unit_price = models.DecimalField(max_digits=6 , decimal_places=2)
+    slug = models.SlugField()
+    # after running migrations , if we choose 2 , we can write code in one 
+    # of lines in below (but also we can choose 1 and let django to handle it ) :
+    # slug = models.SlugField(null=True)
+    # slug = models.SlugField(default='-')
     inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now=True)
     collection = models.ForeignKey(Collection , on_delete=models.PROTECT)
